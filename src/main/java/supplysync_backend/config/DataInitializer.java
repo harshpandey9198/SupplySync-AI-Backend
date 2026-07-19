@@ -11,6 +11,7 @@ import supplysync_backend.entity.*;
 import supplysync_backend.repository.*;
 import java.util.List;
 
+
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
@@ -23,6 +24,7 @@ public class DataInitializer implements CommandLineRunner {
     private final WarehouseRepository warehouseRepository;
     private final ProductRepository productRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
+    private final SalesOrderRepository salesOrderRepository;
 
     @Override
     public void run(String... args) {
@@ -281,6 +283,86 @@ if (purchaseOrderRepository.count() == 0) {
     purchaseOrderRepository.save(po3);
 
     System.out.println("✅ Purchase Orders Inserted");
+
+}
+
+// ==========================
+// Sample Sales Orders
+// ==========================
+
+if (salesOrderRepository.count() == 0) {
+
+    Product p1 = productRepository.findByProductCode("PRD001").orElse(null);
+    Product p2 = productRepository.findByProductCode("PRD005").orElse(null);
+    Product p3 = productRepository.findByProductCode("PRD007").orElse(null);
+
+    SalesOrder so1 = SalesOrder.builder()
+            .orderNumber("SO1001")
+            .customerName("Rahul Sharma")
+            .customerPhone("9876543210")
+            .customerEmail("rahul@gmail.com")
+            .status(SalesOrderStatus.COMPLETED)
+            .totalAmount(new BigDecimal("65000"))
+            .build();
+
+    SalesOrderItem item1 = SalesOrderItem.builder()
+            .productId(p1.getId())
+            .productName(p1.getName())
+            .quantity(1)
+            .unitPrice(new BigDecimal("65000"))
+            .lineTotal(new BigDecimal("65000"))
+            .salesOrder(so1)
+            .build();
+
+    so1.setItems(List.of(item1));
+
+    salesOrderRepository.save(so1);
+
+    SalesOrder so2 = SalesOrder.builder()
+            .orderNumber("SO1002")
+            .customerName("Amit Singh")
+            .customerPhone("9876543211")
+            .customerEmail("amit@gmail.com")
+            .status(SalesOrderStatus.PENDING)
+            .totalAmount(new BigDecimal("3600"))
+            .build();
+
+    SalesOrderItem item2 = SalesOrderItem.builder()
+            .productId(p2.getId())
+            .productName(p2.getName())
+            .quantity(2)
+            .unitPrice(new BigDecimal("1800"))
+            .lineTotal(new BigDecimal("3600"))
+            .salesOrder(so2)
+            .build();
+
+    so2.setItems(List.of(item2));
+
+    salesOrderRepository.save(so2);
+
+    SalesOrder so3 = SalesOrder.builder()
+            .orderNumber("SO1003")
+            .customerName("Neha Verma")
+            .customerPhone("9876543212")
+            .customerEmail("neha@gmail.com")
+            .status(SalesOrderStatus.SHIPPED)
+            .totalAmount(new BigDecimal("1998"))
+            .build();
+
+    SalesOrderItem item3 = SalesOrderItem.builder()
+            .productId(p3.getId())
+            .productName(p3.getName())
+            .quantity(2)
+            .unitPrice(new BigDecimal("999"))
+            .lineTotal(new BigDecimal("1998"))
+            .salesOrder(so3)
+            .build();
+
+    so3.setItems(List.of(item3));
+
+    salesOrderRepository.save(so3);
+
+    System.out.println("✅ Sales Orders Inserted");
 
 }
          
