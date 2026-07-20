@@ -153,6 +153,7 @@ Visit `http://localhost:8080/swagger-ui.html` for interactive API documentation.
 
 <img width="1865" height="932" alt="Screenshot 2026-07-20 111635" src="https://github.com/user-attachments/assets/55a32cc9-ab05-4d8b-abcf-4c3667d85d57" />
 
+<img width="1881" height="692" alt="Screenshot 2026-07-20 111822" src="https://github.com/user-attachments/assets/08b0041b-e90d-44ce-9302-0b6bce4507ed" />
 
 ---
 
