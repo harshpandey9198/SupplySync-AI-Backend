@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 
 import supplysync_backend.entity.*;
 import supplysync_backend.repository.*;
+import java.util.List;
+
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +23,9 @@ public class DataInitializer implements CommandLineRunner {
     private final SupplierRepository supplierRepository;
     private final WarehouseRepository warehouseRepository;
     private final ProductRepository productRepository;
+    private final PurchaseOrderRepository purchaseOrderRepository;
+    private final SalesOrderRepository salesOrderRepository;
+    private final StockMovementRepository stockMovementRepository;
 
     @Override
     public void run(String... args) {
@@ -205,7 +210,6 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("✅ Warehouses Inserted");
         }
 
-        
         // Sample Products
         // ==========================
 
@@ -352,6 +356,211 @@ public class DataInitializer implements CommandLineRunner {
                     .build());
 
             System.out.println("✅ Sample Products Inserted");
+        }
+
+        // ==========================
+// Sample Purchase Orders
+// ==========================
+
+if (purchaseOrderRepository.count() == 0) {
+
+    Product p1 = productRepository.findByProductCode("PRD001").orElse(null);
+    Product p2 = productRepository.findByProductCode("PRD002").orElse(null);
+    Product p3 = productRepository.findByProductCode("PRD003").orElse(null);
+
+    PurchaseOrder po1 = PurchaseOrder.builder()
+            .poNumber("PO1001")
+            .supplierId(1L)
+            .supplierName("ABC Traders")
+            .status(PurchaseOrderStatus.APPROVED)
+            .totalAmount(new BigDecimal("130000"))
+            .build();
+
+    PurchaseOrderItem item1 = PurchaseOrderItem.builder()
+            .productId(p1.getId())
+            .productName(p1.getName())
+            .quantity(2)
+            .unitPrice(new BigDecimal("65000"))
+            .lineTotal(new BigDecimal("130000"))
+            .purchaseOrder(po1)
+            .build();
+
+    po1.setItems(List.of(item1));
+
+    purchaseOrderRepository.save(po1);
+
+    PurchaseOrder po2 = PurchaseOrder.builder()
+            .poNumber("PO1002")
+            .supplierId(2L)
+            .supplierName("Tech World")
+            .status(PurchaseOrderStatus.PENDING)
+            .totalAmount(new BigDecimal("72000"))
+            .build();
+
+    PurchaseOrderItem item2 = PurchaseOrderItem.builder()
+            .productId(p2.getId())
+            .productName(p2.getName())
+            .quantity(1)
+            .unitPrice(new BigDecimal("72000"))
+            .lineTotal(new BigDecimal("72000"))
+            .purchaseOrder(po2)
+            .build();
+
+    po2.setItems(List.of(item2));
+
+    purchaseOrderRepository.save(po2);
+
+    PurchaseOrder po3 = PurchaseOrder.builder()
+            .poNumber("PO1003")
+            .supplierId(4L)
+            .supplierName("Prime Wholesale")
+            .status(PurchaseOrderStatus.RECEIVED)
+            .totalAmount(new BigDecimal("9000"))
+            .build();
+
+    PurchaseOrderItem item3 = PurchaseOrderItem.builder()
+            .productId(p3.getId())
+            .productName(p3.getName())
+            .quantity(2)
+            .unitPrice(new BigDecimal("4500"))
+            .lineTotal(new BigDecimal("9000"))
+            .purchaseOrder(po3)
+            .build();
+
+    po3.setItems(List.of(item3));
+
+    purchaseOrderRepository.save(po3);
+
+    System.out.println("✅ Purchase Orders Inserted");
+
+}
+
+// ==========================
+// Sample Sales Orders
+// ==========================
+
+if (salesOrderRepository.count() == 0) {
+
+    Product p1 = productRepository.findByProductCode("PRD001").orElse(null);
+    Product p2 = productRepository.findByProductCode("PRD005").orElse(null);
+    Product p3 = productRepository.findByProductCode("PRD007").orElse(null);
+
+    SalesOrder so1 = SalesOrder.builder()
+            .orderNumber("SO1001")
+            .customerName("Rahul Sharma")
+            .customerPhone("9876543210")
+            .customerEmail("rahul@gmail.com")
+            .status(SalesOrderStatus.DELIVERED)
+            .totalAmount(new BigDecimal("65000"))
+            .build();
+
+    SalesOrderItem item1 = SalesOrderItem.builder()
+            .productId(p1.getId())
+            .productName(p1.getName())
+            .quantity(1)
+            .unitPrice(new BigDecimal("65000"))
+            .lineTotal(new BigDecimal("65000"))
+            .salesOrder(so1)
+            .build();
+
+    so1.setItems(List.of(item1));
+
+    salesOrderRepository.save(so1);
+
+    SalesOrder so2 = SalesOrder.builder()
+            .orderNumber("SO1002")
+            .customerName("Amit Singh")
+            .customerPhone("9876543211")
+            .customerEmail("amit@gmail.com")
+            .status(SalesOrderStatus.PENDING)
+            .totalAmount(new BigDecimal("3600"))
+            .build();
+
+    SalesOrderItem item2 = SalesOrderItem.builder()
+            .productId(p2.getId())
+            .productName(p2.getName())
+            .quantity(2)
+            .unitPrice(new BigDecimal("1800"))
+            .lineTotal(new BigDecimal("3600"))
+            .salesOrder(so2)
+            .build();
+
+    so2.setItems(List.of(item2));
+
+    salesOrderRepository.save(so2);
+
+    SalesOrder so3 = SalesOrder.builder()
+            .orderNumber("SO1003")
+            .customerName("Neha Verma")
+            .customerPhone("9876543212")
+            .customerEmail("neha@gmail.com")
+            .status(SalesOrderStatus.CONFIRMED)
+            .totalAmount(new BigDecimal("1998"))
+            .build();
+
+    SalesOrderItem item3 = SalesOrderItem.builder()
+            .productId(p3.getId())
+            .productName(p3.getName())
+            .quantity(2)
+            .unitPrice(new BigDecimal("999"))
+            .lineTotal(new BigDecimal("1998"))
+            .salesOrder(so3)
+            .build();
+
+    so3.setItems(List.of(item3));
+
+    salesOrderRepository.save(so3);
+
+    System.out.println("✅ Sales Orders Inserted");
+
+}
+
+
+        // ==========================
+        // Sample Stock Movements
+        // ==========================
+
+        if (stockMovementRepository.count() == 0) {
+
+            Product p1 = productRepository.findByProductCode("PRD001").orElse(null);
+            Product p2 = productRepository.findByProductCode("PRD002").orElse(null);
+            Product p3 = productRepository.findByProductCode("PRD005").orElse(null);
+
+            if (p1 != null) {
+                stockMovementRepository.save(StockMovement.builder()
+                        .product(p1)
+                        .movementType("STOCK_IN")
+                        .quantity(30)
+                        .remarks("Initial stock received from ABC Traders")
+                        .build());
+
+                stockMovementRepository.save(StockMovement.builder()
+                        .product(p1)
+                        .movementType("STOCK_OUT")
+                        .quantity(5)
+                        .remarks("Sold to customer - SO1001")
+                        .build());
+            }
+
+            if (p2 != null) {
+                stockMovementRepository.save(StockMovement.builder()
+                        .product(p2)
+                        .movementType("STOCK_IN")
+                        .quantity(20)
+                        .remarks("Initial stock received from Tech World")
+                        .build());
+            }
+
+            if (p3 != null) {
+                stockMovementRepository.save(StockMovement.builder()
+                        .product(p3)
+                        .movementType("STOCK_OUT")
+                        .quantity(10)
+                        .remarks("Sold to customer - SO1002")
+                        .build());
+            }
+
+            System.out.println("✅ Stock Movements Inserted");
         }
 
         System.out.println("=======================================");

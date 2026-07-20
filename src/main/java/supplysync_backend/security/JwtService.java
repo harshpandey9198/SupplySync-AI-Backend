@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -13,11 +14,16 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET =
-            "SupplySyncSecretKeyForJwtAuthentication2026";
+    private final SecretKey key;
+    private final long expirationMillis;
 
-    private final SecretKey key =
-            Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+    public JwtService(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") long expirationMillis
+    ) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expirationMillis = expirationMillis;
+    }
 
     // Generate JWT
     public String generateToken(String email) {
@@ -25,7 +31,7 @@ public class JwtService {
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 86400000))
+                .expiration(new Date(System.currentTimeMillis() + expirationMillis))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
