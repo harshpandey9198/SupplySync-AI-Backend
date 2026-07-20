@@ -151,7 +151,8 @@ Visit `http://localhost:8080/swagger-ui.html` for interactive API documentation.
 
 ## Screenshots
 
-> _Add dashboard, sales order, and inventory screenshots here._
+<img width="1865" height="932" alt="Screenshot 2026-07-20 111635" src="https://github.com/user-attachments/assets/55a32cc9-ab05-4d8b-abcf-4c3667d85d57" />
+
 
 ---
 
