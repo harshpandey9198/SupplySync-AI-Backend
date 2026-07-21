@@ -1,5 +1,6 @@
 package supplysync_backend.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import supplysync_backend.dto.SalesOrderRequest;
@@ -17,7 +18,7 @@ public class SalesOrderController {
     private final SalesOrderService salesOrderService;
 
     @PostMapping
-    public SalesOrderResponse createSalesOrder(@RequestBody SalesOrderRequest request) {
+    public SalesOrderResponse createSalesOrder(@Valid @RequestBody SalesOrderRequest request) {
         return salesOrderService.createSalesOrder(request);
     }
 

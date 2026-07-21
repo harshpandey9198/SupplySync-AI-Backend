@@ -1,5 +1,6 @@
 package supplysync_backend.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import supplysync_backend.dto.ProductRequest;
@@ -16,7 +17,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ProductResponse addProduct(@RequestBody ProductRequest request) {
+    public ProductResponse addProduct(@Valid @RequestBody ProductRequest request) {
         return productService.addProduct(request);
     }
 
@@ -31,7 +32,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ProductResponse updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
+    public ProductResponse updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest request) {
         return productService.updateProduct(id, request);
     }
 
